@@ -18,7 +18,7 @@ type Services struct {
 
 type Database struct {
 	Host     string
-	Port     string
+	Port     int64
 	User     string
 	Password string
 	Type     string

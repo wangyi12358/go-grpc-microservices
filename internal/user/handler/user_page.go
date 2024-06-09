@@ -6,7 +6,16 @@ import (
 )
 
 func (u *UserServiceHandler) UserPage(context.Context, *user.UserPageReq) (*user.UserPageRes, error) {
+	users, err := u.model.UserList()
+	if err != nil {
+		return nil, err
+	}
+	total, err := u.model.Total()
+	if err != nil {
+		return nil, err
+	}
 	return &user.UserPageRes{
-		Total: 10,
+		List:  OfUsersRes(users),
+		Total: int32(total),
 	}, nil
 }

@@ -7,11 +7,13 @@ import (
 	"microservices/api/proto/user"
 	"microservices/internal/user/handler"
 	"microservices/pkg/config"
+	"microservices/pkg/model"
 	"net"
 )
 
 func init() {
 	config.Setup()
+	model.Setup(config.Config.Services.User.Name)
 }
 
 func main() {
@@ -22,7 +24,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	user.RegisterUserServiceServer(grpcServer, &handler.UserServiceHandler{})
+	user.RegisterUserServiceServer(grpcServer, handler.NewUserServiceHandler())
 
 	log.Printf("starting gRPC server on %s", config.Config.Services.User.Port)
 	if err := grpcServer.Serve(lis); err != nil {
