@@ -5,7 +5,7 @@ This is a simple gRPC micro service written in Go. It is a simple service that t
 
 * Go 1.22
 * protoc
-* PostgresSQL 14
+* PostgreSQL 14
 
 ## Running the service
 
