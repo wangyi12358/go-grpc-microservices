@@ -7,7 +7,26 @@ import (
 	"os"
 )
 
+type Service struct {
+	Port string
+	Name string
+}
+
+type Services struct {
+	User Service
+}
+
+type Database struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Type     string
+}
+
 type Conf struct {
+	Database Database
+	Services Services
 }
 
 var Config Conf
@@ -28,4 +47,5 @@ func Setup() {
 	if viper.Unmarshal(&Config) != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+	fmt.Print("Config loaded\n")
 }

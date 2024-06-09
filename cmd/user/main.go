@@ -1,25 +1,31 @@
 package main
 
 import (
+	"fmt"
 	"google.golang.org/grpc"
 	"log"
+	"microservices/api/proto/user"
+	"microservices/internal/user/handler"
+	"microservices/pkg/config"
 	"net"
 )
 
 func init() {
-
+	config.Setup()
 }
 
 func main() {
-
-	lis, err := net.Listen("tcp", ":50051")
+	address := fmt.Sprintf(":%s", config.Config.Services.User.Port)
+	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	grpcServer := grpc.NewServer()
+	user.RegisterUserServiceServer(grpcServer, &handler.UserServiceHandler{})
 
-	if err := s.Serve(lis); err != nil {
+	log.Printf("starting gRPC server on %s", config.Config.Services.User.Port)
+	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
