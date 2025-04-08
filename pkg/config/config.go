@@ -1,51 +1,38 @@
 package config
 
 import (
-	"flag"
-	"fmt"
-	"github.com/spf13/viper"
-	"os"
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
-type Service struct {
-	Port string
-	Name string
-}
-
-type Services struct {
-	User Service
-}
-
-type Database struct {
-	Host     string
-	Port     int64
-	User     string
-	Password string
-	Type     string
-}
-
-type Conf struct {
-	Database Database
-	Services Services
-}
-
-var Config Conf
-
-func Setup() {
-	env := os.Getenv("ENV")
-	if env == "" {
-		env = "dev"
+type (
+	Config struct {
+		HTTP HTTP
+		DB   DB
+		// Services
+		Services struct {
+			User User
+		}
 	}
-	fmt.Printf("env: %s\n", env)
-	flag.Parse()
-	viper.SetEnvPrefix(env)
-	viper.AutomaticEnv()
-	viper.SetConfigName("config." + env)
-	viper.AddConfigPath("./config/")
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if viper.Unmarshal(&Config) != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	DB struct {
+		Host     string `env:"DB_HOST"`
+		Port     int    `env:"DB_PORT"`
+		User     string `env:"DB_USER"`
+		Password string `env:"DB_PASSWORD"`
+		Name     string `env:"DB_NAME"`
+		SSLMode  string `env:"DB_SSLMODE"`
 	}
-	fmt.Print("Config loaded\n")
+
+	User struct {
+		Port string `env:"USER_PORT"`
+	}
+
+	HTTP struct {
+		Port string `env:"HTTP_PORT"`
+	}
+)
+
+func New() (*Config, error) {
+	cfg := Config{}
+	err := cleanenv.ReadEnv(&cfg)
+	return &cfg, err
 }

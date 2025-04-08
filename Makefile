@@ -9,6 +9,13 @@ gen-model:
 start: check-service
 	go run cmd/$(SERVICE)/main.go
 
+ent-generate:
+	go run -mod=mod cmd/ent/generate/main.go
+
+gql-generate:
+	go run -mod=mod github.com/99designs/gqlgen
+
+
 check-service:
 ifndef SERVICE
 	$(error SERVICE is not set. Usage: make start service)

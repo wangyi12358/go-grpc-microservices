@@ -1,0 +1,26 @@
+
+type AccessToken {
+  accessToken: String!,
+  accessExpireAt: Int64!,
+}
+
+type RefreshToken {
+  refreshToken: String!,
+  refreshExpireAt: Int64!,
+}
+
+type Login {
+  refresh: RefreshToken!,
+  access: AccessToken!,
+  user: User!
+
+}
+
+extend type Query {
+  profile: User
+}
+
+type Mutation {
+  login(username: String!, password: String!): Login @skipAuth
+  refreshAccessToken(refreshToken: String!): AccessToken
+}

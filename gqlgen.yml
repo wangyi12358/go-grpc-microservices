@@ -1,0 +1,26 @@
+# schema tells gqlgen where the GraphQL schema is located.
+schema:
+  - api/graphql/*.graphql
+resolver:
+  layout: follow-schema
+  dir: internal/gateway/graphql/resolver
+autobind:
+  - microservices/ent
+model:
+  filename: internal/gateway/graphql/model/models_gen.go
+  package: model
+exec:
+  filename: internal/gateway/graphql/generated.go
+models:
+  UUID:
+    model:
+      - github.com/99designs/gqlgen/graphql.UUID
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.UUID
+  Int64:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int64
+  Time:
+    model:
+      - github.com/99designs/gqlgen/graphql.Time

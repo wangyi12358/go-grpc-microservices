@@ -22,7 +22,7 @@ wire_gen.go
 
 # env file
 .env
-.env.*
+.env.local
 
 # Macos
 *.DS_Store

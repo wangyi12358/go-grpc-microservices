@@ -1,0 +1,4 @@
+
+scalar Int64
+
+directive @skipAuth on FIELD_DEFINITION
