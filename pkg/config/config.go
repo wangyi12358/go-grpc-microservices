@@ -8,6 +8,7 @@ type (
 	Config struct {
 		HTTP HTTP
 		DB   DB
+		Etcd Etcd
 		// Services
 		Services struct {
 			User User
@@ -28,6 +29,10 @@ type (
 
 	HTTP struct {
 		Port string `env:"HTTP_PORT"`
+	}
+
+	Etcd struct {
+		Address string `env:"ETCD_ADDRESS"`
 	}
 )
 

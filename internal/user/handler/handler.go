@@ -1,4 +1,4 @@
-package grpc
+package handler
 
 import (
 	"microservices/api/proto/user"

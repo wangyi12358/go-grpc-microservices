@@ -1,3 +1,6 @@
+include .env
+export
+
 .PHONY: check-service
 
 gen-grpc-file: check-service
