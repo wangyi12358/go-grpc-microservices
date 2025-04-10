@@ -12,14 +12,15 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 	"go.uber.org/fx"
 	"microservices/internal/gateway/graphql/resolver"
+	"microservices/internal/gateway/service"
 	"microservices/pkg/config"
 	"microservices/pkg/middleware"
 	"time"
 )
 
 // Defining the Graphql handler
-func graphqlHandler() gin.HandlerFunc {
-	srv := handler.New(resolver.NewSchema())
+func graphqlHandler(svc *service.Service) gin.HandlerFunc {
+	srv := handler.New(resolver.NewSchema(svc))
 
 	srv.AddTransport(transport.Websocket{
 		KeepAlivePingInterval: 10 * time.Second,
@@ -41,14 +42,14 @@ func graphqlHandler() gin.HandlerFunc {
 	}
 }
 
-func NewHTTPServer() (*gin.Engine, error) {
+func NewHTTPServer(svc *service.Service) (*gin.Engine, error) {
 	r := gin.New()
 	r.Use(gin.Recovery(), middleware.GqlLoggerMiddleware(), middleware.GqlLogger(), middleware.Cors(), middleware.GinContext2Context())
 
 	r.GET("/", func(c *gin.Context) {
 		playground.Handler("GraphQL playground", "/graphql").ServeHTTP(c.Writer, c.Request)
 	})
-	r.POST("/graphql", graphqlHandler())
+	r.POST("/graphql", graphqlHandler(svc))
 	return r, nil
 }
 

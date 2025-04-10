@@ -20,11 +20,12 @@ type (
 		User     string `env:"DB_USER"`
 		Password string `env:"DB_PASSWORD"`
 		Name     string `env:"DB_NAME"`
-		SSLMode  string `env:"DB_SSLMODE"`
+		SSLMode  string `env:"DB_SSL_MODE"`
 	}
 
 	User struct {
 		Port string `env:"USER_PORT"`
+		Name string `env:"USER_NAME"`
 	}
 
 	HTTP struct {
